@@ -1,0 +1,31 @@
+mat-form-field{
+    width: 100%;
+}
+
+.forgot-btn{
+    margin-top: 2%;
+    border-width: 1px 1px 2px 1px;
+    width: 100%;
+}
+
+.login-btn{
+    margin-top: 2%;
+    border-width: 1px 1px 2px 1px;
+    width: 100%;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    outline: 0;
+  }
+
+  .modal-dialog{
+    background-color: gray;
+  }

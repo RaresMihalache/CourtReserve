@@ -1,0 +1,17 @@
+.date-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.date-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 2rem;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

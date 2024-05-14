@@ -1,0 +1,101 @@
+<div class="container">
+    <h1>My Reservations</h1>
+    <button class="btn btn-primary" (click)="getReservationsByStatus()" [disabled]="displayed === true">Get Reservations </button>
+
+
+    <table class="table">
+        <thead>
+            <th scope="col" >Id</th>
+            <th scope="col" >Status</th>
+            <th scope="col" >Start Time</th>
+            <th scope="col" >End Time</th>
+            <th scope="col" class="col-1"></th>
+            <th scope="col" class="col-1"></th>
+            <th scope="col" class="col-1"></th>
+            <th scope="col" class="col-1"></th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let partnerReservation of partnerReservations">
+                <td>{{partnerReservation.id}}</td>
+                <td>Looking for player</td>
+                <td>{{partnerReservation.startTime}}</td>
+                <td>{{partnerReservation.endTime}}</td>
+                <td>
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#reservationDetails" (click)="setSelectedReservationId(partnerReservation); setReservationType('partner');">Details</button>
+                </td>
+                <td>
+                    <button class="btn btn-dark" (click)="setSelectedReservationId(partnerReservation); findPlayers();">Takeover</button>
+                </td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr *ngFor="let completedReservation of completedReservations">
+                <td>{{completedReservation.id}}</td>
+                <td>Reserved</td>
+                <td>{{completedReservation.startTime}}</td>
+                <td>{{completedReservation.endTime}}</td>
+                <td>
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#reservationDetails" (click)="setSelectedReservationId(completedReservation); setReservationType('completed');">Details</button>
+                </td>
+                <td>
+                    <button class="btn btn-dark" (click)="setSelectedReservationId(completedReservation); findPlayers();">Takeover</button>
+                </td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr *ngFor="let takeoverReservation of takeoverReservations">
+                <td>{{takeoverReservation.id}}</td>
+                <td>Takeover</td>
+                <td>{{takeoverReservation.startTime}}</td>
+                <td>{{takeoverReservation.endTime}}</td>
+                <td>
+                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#reservationDetails" (click)="setSelectedReservationId(takeoverReservation); setReservationType('takeover');">Details</button>             
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="reservationDetails" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form (ngSubmit)="cancelReservation()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Reservation Details</h5>
+                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="row">
+                        <div class="col-sm-4"><h6>Court number: <span class="normal-font">{{this?.reservationDetails?.court?.number}}</span></h6></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><h6>Start Time: <span class="normal-font">{{this.reservationDetails.startTime}}</span></h6></div>
+                        <div class="col-6"><h6>End Time: <span class="normal-font">{{this.reservationDetails.endTime}}</span></h6></div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6"><h6>User #1: <span class="normal-font">{{this?.reservationDetails?.users?.[0]?.name}}</span></h6></div>
+                        <div class="col-6"><h6>User #2: <span class="normal-font">{{this.secondUserName}}</span></h6></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4"><h6>Price: <span class="normal-font">$$$</span></h6></div>
+                    </div>
+
+                    <div class="row">
+                        <span class="normal-font warning" *ngIf="timeDifferenceNowReservation < 24">Note: If you cancel the reservation you will be charged!</span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="cancelReservation()">Cancel Reservation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

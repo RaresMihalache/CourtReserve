@@ -1,0 +1,94 @@
+<div class="container">
+    <h1 class="my-3">Court Management</h1>
+
+    <div class="address-row my-4">
+        <select class="form-select w-25" [(ngModel)]="selectedAddress" (ngModelChange)="getCourtsForSelectedAddress()">
+            <option selected disabled [ngValue]="">Location</option>
+            <option *ngFor="let address of addresses" [ngValue]="address">{{address.city}}, {{address.street}}, Num. {{address.number}}</option>
+        </select>
+        
+        <button class="btn btn-primary" *ngIf="selectedAddress" data-bs-toggle="modal" data-bs-target="#court" (click)="updateMode = false">Add court</button>
+    </div>
+
+    <table class="table" *ngIf="selectedAddress">
+        <thead>
+            <th scope="col" >Number</th>
+            <th scope="col" >Surface</th>
+            <th scope="col" class="col-1"></th>
+            <th scope="col" class="col-1"></th>
+            <th scope="col" class="col-1"></th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let court of filteredCourts">
+                <td>{{court.number}}</td>
+                <td>{{court.surface}}</td>
+                <td>
+                    <button class="btn btn-outline-primary night-btn" data-bs-toggle="modal" data-bs-target="#setTariff" (click)="setSelectedCourtId(court)">Set Night Tariff</button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#court" (click)="changeToUpdateMode(court)">Update</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" (click)="deleteCourt(court.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="court" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="courtForm" (ngSubmit)="submitForm()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{updateMode ? 'Update court' : 'Create court'}}</h5>
+                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-4" for="number-field">Number: </label>
+                        <input class="col-8" id="number-field" type="text" formControlName="number">
+                    </div>
+            
+                    <div class="row">
+                        <label class="col-4" for="surface-field">Surface: </label>
+                        <input class="col-8" id="surface-field" type="text" formControlName="surface">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{updateMode ? 'Update' : 'Create'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal setTariff-->
+<div class="modal fade" id="setTariff" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="tariffForm" (ngSubmit)="changeTariff()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Set Tariff</h5>
+                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+            
+                    <div class="row">
+                        <label class="col-4" for="surface-field">Night Tariff (RON): </label>
+                        <input class="col-8" id="surface-field" type="number" formControlName="nightTariff">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">{{updateMode ? 'Update' : 'Create'}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

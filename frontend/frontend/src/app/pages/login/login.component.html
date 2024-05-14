@@ -1,0 +1,47 @@
+
+<mat-card>
+    <mat-card-header>
+        <h1>User Login</h1>
+    </mat-card-header>
+    <mat-card-content>
+
+        <form class="example-form" [formGroup]="loginform">
+            <mat-form-field>
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" >
+            </mat-form-field>
+              <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password">
+              </mat-form-field>
+              <button mat-raised-button color="primary" class="login-btn" (click)='proceedlogin()'>Login</button>
+              <br>
+              <button mat-raised-button color="accent" class="forgot-btn" (click)='forgotPass()'>Forgot Password?</button>
+        </form>
+
+    </mat-card-content>
+</mat-card>
+
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" *ngIf="badLogin" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Error</h5>
+        <button type="button" class="close" aria-label="Close" (click)="badLogin = false;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>Email or password are incorrect!</p>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="badLogin = false;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

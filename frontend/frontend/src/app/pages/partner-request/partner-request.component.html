@@ -1,0 +1,35 @@
+<div class="row">
+    <h1>Partner Requests</h1>
+</div>
+
+<br>
+
+<div class="row">
+    <div class="date-row">
+        <div class="date-form">
+            Date
+            <input class="form-control" type="date" [(ngModel)]="date" [min]="today">
+        </div>
+    
+        <div class="date-form">
+            <br>
+            <button class="btn btn-primary" (click)="search()">Search</button>
+        </div>
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="row" *ngIf="display">
+    <div class="col-3 mb-3" *ngFor="let reservation of reservations">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{reservation.users?.at(0)?.name}}</h5>
+                <button class="btn btn-primary" (click)="addUserToReservation(reservation?.id)">Join</button>
+            </div>
+        </div>
+    </div>
+    
+    <p *ngIf="emptyReservations()">No requests available in the day specified.</p>
+</div>

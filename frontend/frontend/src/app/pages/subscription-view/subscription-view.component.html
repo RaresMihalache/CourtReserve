@@ -1,0 +1,99 @@
+<h1>Subscriptions</h1>
+<p>Create and manage your subscriptions.</p>
+
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-subscription">New subscription</button>
+
+<hr>
+
+<div class="container">
+    <div class="row" *ngFor="let subscription of subscriptions, let i = index">
+        <div class="sub-header">
+            <i>Subscription {{i+1}}</i>
+            <button class="btn btn-success" (click)="generateInvoice(subscription.id)">Generate invoice</button>
+        </div>
+
+        <div class="col" *ngFor="let reservation of subscription.reservations">
+            <div class="card">
+                <div class="card-body">
+                  <b>Start time:</b> {{reservation.startTime}} <br>
+                  <b>End time:</b> {{reservation.endTime}} <br>
+                  <b>Players:</b> <br>
+                  <span *ngFor="let player of reservation.users">{{player.name}}<br></span>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+
+<div class="modal fade" id="new-subscription" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New subscription</h5>
+                <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        Location
+                        <select class="form-select" [(ngModel)]="selectedAddress" (ngModelChange)="getAllCourtsBySelectedAddress()">
+                            <option *ngFor="let address of addresses" [ngValue]="address">
+                                {{address.city}}, {{address.street}}, Num. {{address.number}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        Court
+                        <select class="form-select" [(ngModel)]="selectedCourtId">
+                            <option *ngFor="let court of courts" [ngValue]="court.id">
+                                {{court.number}} - {{court.surface}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        Every
+                        <select class="form-select" [(ngModel)]="selectedDay">
+                            <option [ngValue]=1>Monday</option>
+                            <option [ngValue]=2>Tuesday</option>
+                            <option [ngValue]=3>Wednesday</option>
+                            <option [ngValue]=4>Thursday</option>
+                            <option [ngValue]=5>Friday</option>
+                            <option [ngValue]=6>Saturday</option>
+                            <option [ngValue]=0>Sunday</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        From
+                        <input class="form-control" type="time" [(ngModel)]="startHour">
+                    </div>
+                    <div class="col">
+                        To
+                        <input class="form-control" type="time" [(ngModel)]="endHour">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        Number of weeks
+                        <input type="number" class="form-control" [min]="2" [max]="8" [defaultValue]="2" onKeyDown="return false" [(ngModel)]="occurence">
+                    </div>
+                </div>     
+            </div>
+
+            <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForm()">Close</button>
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="createSubscription()" [disabled]="!(selectedCourtId && startHour && endHour)">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

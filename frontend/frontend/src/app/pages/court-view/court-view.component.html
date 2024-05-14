@@ -1,0 +1,105 @@
+<div class="container">
+    <h1>Court Availability</h1>
+    <p>Check our courts availability below. {{description}}</p>
+
+    <div class="row">
+        <div class="form-row">
+            <div class="date-form">
+                Location
+                <select class="form-select" [(ngModel)]="selectedAddress" (change)="selectedAddressBool = true">
+                    <option *ngFor="let address of addresses" [ngValue]="address">{{address.city}}, {{address.street}}, Num. {{address.number}}</option>
+                </select>
+            </div>
+            
+            <div class="date-form">
+                Date
+                <input type="date" class="form-control" [min]="todayDate" [(ngModel)]="selectedDate">
+            </div>
+
+            <div class="date-form">
+                From
+                <input type="time" class="form-control" [min]="todayDate" [(ngModel)]="selectedStart">
+            </div>
+
+            <div class="date-form">
+                To
+                <input type="time" class="form-control" [min]="todayDate" [(ngModel)]="selectedEnd">
+            </div>
+            
+            <div class="date-form">
+                <br>
+                <button class="btn btn-primary" [disabled]="!(selectedAddressBool && selectedStart && selectedEnd)" (click)="getAllAvailableCourts()">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="courts">
+        <div class="col-3" *ngFor="let court of courts">
+            <div class="card my-3">
+                <div class="container">
+                <div class="row g-0"> 
+                    <div class="col">
+                        <div class="card-body">
+                        <h5 class="card-title">Court {{court.number}}</h5>
+                        <p class="card-text">Surface: {{court.surface}}</p>
+                        <div class="row">
+                            <button class="btn btn-primary" *ngIf="isLoggedUser" data-bs-toggle="modal" data-bs-target="#reservation" (click)="selectedCourt=court; computePrice()">Reserve</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="reservation" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form (ngSubmit)="createReservation()">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create reservation</h5>
+                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            Date:
+                            <input class="col-8 form-control" id="date-field" type="text" [value]="selectedDate" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            From:
+                            <input class="col-8 form-control" id="start-field" type="time" [value]="selectedStart">
+                        </div>
+
+                        <div class="col">
+                            To:
+                            <input class="col-8 form-control" id="end-field" type="time" [value]="selectedEnd">
+                        </div>
+
+                        <div class="Price">
+                            Price: {{this.reservationPrice}} $
+                        </div>
+                        
+                    </div>
+                </div>
+                    
+
+                    <!-- <div class="row">
+                        <label class="col-4" for="user-field">Players: </label>
+                        <input class="col-8" id="user-field" type="text" formControlName="users">
+                    </div> -->
+                <div class="modal-footer">
+                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
